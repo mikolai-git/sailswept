@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://b7itqkeltc6fr"]
+
+[ext_resource type="PackedScene" uid="uid://mlnjqu82od8p" path="res://Models/Sailboat_2.glb" id="1_dlex0"]
+[ext_resource type="Material" uid="uid://ilwhetybx2qw" path="res://Materials/Wood.tres" id="2_o568x"]
+
+[node name="Sailboat_2" instance=ExtResource("1_dlex0")]
+
+[node name="Body" parent="Sailboat" index="0"]
+surface_material_override/0 = ExtResource("2_o568x")
+
+[node name="Boom" parent="Sailboat" index="1"]
+surface_material_override/0 = ExtResource("2_o568x")
+
+[node name="Mast" parent="Sailboat" index="2"]
+surface_material_override/0 = ExtResource("2_o568x")
+
+[node name="Rudder" parent="Sailboat" index="3"]
+surface_material_override/0 = ExtResource("2_o568x")
