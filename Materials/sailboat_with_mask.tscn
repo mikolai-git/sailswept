@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://bnq85ynn6wekh"]
+
+[ext_resource type="PackedScene" uid="uid://dglauyigw146c" path="res://Models/Sailboat_with_mask.glb" id="1_sy25u"]
+[ext_resource type="Material" uid="uid://ilwhetybx2qw" path="res://Materials/Wood.tres" id="2_5tcbj"]
+[ext_resource type="Material" uid="uid://btfjgqmaej7d" path="res://Materials/water_mask.tres" id="3_nul25"]
+
+[node name="Sailboat_with_mask" instance=ExtResource("1_sy25u")]
+
+[node name="Body" parent="Sailboat" index="0"]
+surface_material_override/0 = ExtResource("2_5tcbj")
+
+[node name="Boom" parent="Sailboat" index="1"]
+surface_material_override/0 = ExtResource("2_5tcbj")
+
+[node name="Mask" parent="Sailboat" index="2"]
+surface_material_override/0 = ExtResource("3_nul25")
+
+[node name="Mast" parent="Sailboat" index="3"]
+surface_material_override/0 = ExtResource("2_5tcbj")
+
+[node name="Rudder" parent="Sailboat" index="4"]
+transform = Transform3D(0, 1, 0, 0, 0, -1, -0.477459, 0, 0, 0.012473, 0.729452, 3.77449)
+surface_material_override/0 = ExtResource("2_5tcbj")

@@ -8,7 +8,7 @@ extends RigidBody3D
 # Boat physics
 @export var water_level: float = 0.0
 @export var buoyancy_force: float = 10.0
-@export var forward_force: float = 4
+@export var forward_force: float = 5
 @export var turn_speed_degrees: float = 90.0  # degrees per second
 
 # Sail physics
@@ -20,6 +20,12 @@ func _physics_process(delta):
 	if global_position.y < water_level:
 		var force = Vector3.UP * buoyancy_force
 		apply_central_force(force)
+		
+	# Reduce sideways drift
+	var local_velocity = global_transform.basis.inverse() * linear_velocity
+	local_velocity.x = lerp(local_velocity.x, 0.0, 1.5 * delta)  # Kill sideways movement
+	linear_velocity = global_transform.basis * local_velocity
+
 
 	# Handle turning
 	var turn_input = Input.get_action_strength("ui_left") - Input.get_action_strength("ui_right")

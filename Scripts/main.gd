@@ -17,19 +17,14 @@ func _ready():
 
 
 func wind_logic():
-	var random = randi() % 4
+	var random = randi() % 2
 
 	match random:
+
 		0:
-			wind_direction = Vector3(0, 0, -1)
-			wind_label = "North"
-		1:
-			wind_direction = Vector3(1, 0, 0)
-			wind_label = "East"
-		2:
 			wind_direction = Vector3(0, 0, 1)
 			wind_label = "South"
-		3:
+		1:
 			wind_direction = Vector3(-1, 0, 0)
 			wind_label = "West"
 	

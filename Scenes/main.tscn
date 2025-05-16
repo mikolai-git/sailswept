@@ -1,0 +1,81 @@
+[gd_scene load_steps=12 format=3 uid="uid://bckb5l63v7xcp"]
+
+[ext_resource type="Script" uid="uid://cglxthab8vvma" path="res://Scripts/main.gd" id="1_6bp64"]
+[ext_resource type="Script" uid="uid://btegwta6d65pp" path="res://Scripts/camera_rig.gd" id="2_344ge"]
+[ext_resource type="PackedScene" uid="uid://bnq85ynn6wekh" path="res://Materials/sailboat_with_mask.tscn" id="2_ynf5e"]
+[ext_resource type="Shader" uid="uid://lejwuvlpha8q" path="res://Shaders/pixelate.gdshader" id="3_ynf5e"]
+[ext_resource type="Script" uid="uid://cyso47sc2mcwc" path="res://Scripts/boat.gd" id="4_hptm8"]
+[ext_resource type="Script" uid="uid://vti5hixyvwmc" path="res://Scripts/water_plane.gd" id="7_6bp64"]
+[ext_resource type="PackedScene" uid="uid://cuvvsfndxvr7o" path="res://Scenes/WaterPlane.tscn" id="7_fdnlq"]
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_5vw27"]
+viewport_path = NodePath("FinalViewport")
+
+[sub_resource type="QuadMesh" id="QuadMesh_1bvp3"]
+size = Vector2(70, 39)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7mycd"]
+render_priority = 0
+shader = ExtResource("3_ynf5e")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ig7tw"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_6bp64")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+texture_filter = 1
+texture_repeat = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(1.00075, 1)
+texture = SubResource("ViewportTexture_5vw27")
+
+[node name="FinalViewport" type="SubViewport" parent="."]
+size = Vector2i(228, 128)
+
+[node name="MainCameraRig" type="Node3D" parent="FinalViewport"]
+top_level = true
+script = ExtResource("2_344ge")
+boat_path = NodePath("../Boat")
+
+[node name="Camera3D" type="Camera3D" parent="FinalViewport/MainCameraRig"]
+transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.499999, -0.707107, -0.353553, 0.612372, 25, 25, 25)
+keep_aspect = 0
+projection = 1
+size = 70.0
+
+[node name="QuadMesh" type="MeshInstance3D" parent="FinalViewport/MainCameraRig"]
+transform = Transform3D(0.707107, -0.353553, 0.612372, 0, 0.866025, 0.5, -0.707107, -0.353553, 0.612372, 24, 24, 24)
+visible = false
+mesh = SubResource("QuadMesh_1bvp3")
+surface_material_override/0 = SubResource("ShaderMaterial_7mycd")
+
+[node name="Boat" type="RigidBody3D" parent="FinalViewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.635406, 0)
+script = ExtResource("4_hptm8")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FinalViewport/Boat"]
+shape = SubResource("CapsuleShape3D_ig7tw")
+debug_color = Color(0.423529, 0.160784, 0, 1)
+
+[node name="BoatMesh" parent="FinalViewport/Boat" instance=ExtResource("2_ynf5e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25806, 0)
+
+[node name="WakeOrigin" type="Node3D" parent="FinalViewport/Boat"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0543203, 0.381766, 2.812)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.422618, -0.453154, 0.784886, 0, 0.866025, 0.5, -0.906308, 0.211309, -0.365998, 0, 10.1993, -13.9153)
+
+[node name="WindTimer" type="Timer" parent="."]
+
+[node name="WaterPlane" parent="." node_paths=PackedStringArray("boat_wake_origin") instance=ExtResource("7_fdnlq")]
+transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 50, -0.132873, 0.139771, 0.93457)
+script = ExtResource("7_6bp64")
+boat_wake_origin = NodePath("../FinalViewport/Boat/WakeOrigin")
